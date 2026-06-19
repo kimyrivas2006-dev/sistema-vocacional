@@ -720,7 +720,19 @@ elif st.session_state.pantalla == "menu":
 # 4. INTERFAZ INTERACTIVA: TEST DE HOLLAND
 # =========================================================================
 elif st.session_state.pantalla == "holland":
-    st.markdown("<style>.stApp { background-color: #f8f9fa !important; color: #212529 !important; }</style>", unsafe_allow_html=True)
+    st.markdown(
+        """
+        <style>
+        .stApp { background-color: #f8f9fa !important; color: #212529 !important; }
+        /* Fuerza a que los textos de las opciones de los radio buttons se vean negros */
+        div[data-testid="stRadio"] label p {
+            color: #212529 !important;
+            font-weight: 500 !important;
+        }
+        </style>
+        """, 
+        unsafe_allow_html=True
+    )
     usuario = st.session_state.usuario
     progreso = usuario["progreso_holland"]
     st.title("📋 Cuestionario de Intereses de Holland")
@@ -771,7 +783,19 @@ elif st.session_state.pantalla == "holland":
 # 5. INTERFAZ INTERACTIVA: TEST DE GARDNER
 # =========================================================================
 elif st.session_state.pantalla == "gardner":
-    st.markdown("<style>.stApp { background-color: #f8f9fa !important; color: #212529 !important; }</style>", unsafe_allow_html=True)
+    st.markdown(
+        """
+        <style>
+        .stApp { background-color: #f8f9fa !important; color: #212529 !important; }
+        /* Fuerza a que los textos de las opciones de los radio buttons se vean negros */
+        div[data-testid="stRadio"] label p {
+            color: #212529 !important;
+            font-weight: 500 !important;
+        }
+        </style>
+        """, 
+        unsafe_allow_html=True
+    )
     usuario = st.session_state.usuario
     progreso = usuario["progreso_gardner"]
     st.title("🧠 Cuestionario de Inteligencias Múltiples (Gardner)")
