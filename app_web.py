@@ -82,13 +82,37 @@ if st.session_state.pantalla == "portada":
             margin-bottom: 20px;
         }
         .titulo-central {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            font-size: 72px;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 15px;
-            letter-spacing: -1px;
-        }
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    /* Usamos 'vw' (view width) para que el tamaño se adapte mágicamente al ancho de cualquier pantalla */
+    font-size: min(10vw, 55px); 
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+    line-height: 1.2;
+}
+
+/* 🎯 SOLUCIÓN A LOS BOTONES OSCUROS: Obligamos a que el texto siempre sea blanco y legible */
+div.stButton > button {
+    color: #ffffff !important;
+    background-color: #262730 !important; /* Un gris oscuro elegante de fondo */
+    border: 1px solid #4a4b57 !important;
+    font-weight: 600 !important;
+}
+
+div.stButton > button:hover {
+    color: #ffffff !important;
+    border-color: #7d3cff !important; /* Color morado al pasar el cursor o pulsar */
+}
+
+/* 🎯 SOLUCIÓN AL PIE DE PÁGINA: Evita que las palabras se pisen en el teléfono */
+@media (max-width: 600px) {
+    .stHorizontalBlock {
+        flex-direction: column !important;
+        gap: 10px;
+        text-align: center;
+}
+
         .subtitulo-frase {
             font-family: 'Helvetica Neue', Arial, sans-serif;
             font-style: italic;
