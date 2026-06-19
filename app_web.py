@@ -396,8 +396,9 @@ elif st.session_state.pantalla == "login":
         """,
         unsafe_allow_html=True
     )
+
 # =========================================================================
-# PANTALLA DE REGISTRO INTERMEDIA (CON EL DEGRADADO Y BOTÓN DE REGRESAR)
+# PANTALLA DE REGISTRO INTERMEDIA (CORRECCIÓN DE CONTRASTE EN INPUTS)
 # =========================================================================
 elif st.session_state.pantalla == "registro":
     st.markdown(
@@ -409,20 +410,28 @@ elif st.session_state.pantalla == "registro":
             color: #ffffff !important;
         }
         
-        /* Ajuste de textos fijos de Streamlit para que sean legibles en fondo oscuro */
-        .stApp p, .stApp label, .stApp div {
+        /* Ajuste de textos generales */
+        .stApp p, .stApp label, .stApp h3 {
             color: #ffffff !important;
         }
         
-        /* Estilizado de los campos de entrada de texto */
+        /* 👁️ CORRECCIÓN AQUÍ: Fondo oscuro intermedio y letras BLANCAS con alto contraste al escribir */
         .stTextInput input {
-            background-color: rgba(255, 255, 255, 0.07) !important;
-            color: #ffffff !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important; /* Fuerza a que las letras tipeadas sean blancas */
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
             border-radius: 8px !important;
+            font-size: 16px !important;
         }
         
-        /* Título Principal de la pantalla */
+        /* Asegurar que cuando el usuario haga clic en el recuadro, el texto siga siendo legible */
+        .stTextInput input:focus {
+            color: #ffffff !important;
+            background-color: rgba(255, 255, 255, 0.15) !important;
+            border-color: #4f46e5 !important;
+        }
+        
+        /* Título Principal */
         .titulo-registro {
             font-family: 'Helvetica Neue', Arial, sans-serif;
             font-size: min(8vw, 42px) !important;
@@ -435,26 +444,21 @@ elif st.session_state.pantalla == "registro":
             margin-bottom: 10px;
         }
 
-        /* Asegurar que el texto del botón primario sea legible */
+        /* Botón primario */
         div.stButton > button[kind="primary"] {
             color: #ffffff !important;
             background-color: #4f46e5 !important;
             border: none !important;
         }
         
-        /* Estilo para el botón secundario de Cerrar Sesión en fondo oscuro */
+        /* Botón secundario */
         div.stButton > button[kind="secondary"] {
             color: rgba(255, 255, 255, 0.7) !important;
             background-color: transparent !important;
             border: 1px solid rgba(255, 255, 255, 0.2) !important;
         }
-        div.stButton > button[kind="secondary"]:hover {
-            color: #ffffff !important;
-            border-color: #ffffff !important;
-            background-color: rgba(255, 255, 255, 0.05) !important;
-        }
         
-        /* Footer responsivo integrado con enlaces blancos */
+        /* Footer */
         .footer-portada-limpio {
             margin-top: 80px;
             padding-bottom: 20px;
@@ -484,21 +488,19 @@ elif st.session_state.pantalla == "registro":
     )
     
     # 🎓 Nombre de la aplicación y cabecera estilizada
-    st.markdown('<h1 class="titulo-registro">🎓 VocatiON</h1>', unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center; margin-bottom: 30px;'>Crear Nuevo Perfil Escolar</h3>", unsafe_allow_html=True)
+    st.markdown('<h1 class="titulo-registro">🎓 Vocati<span style="color: #10b981 !important; -webkit-text-fill-color: #10b981 !important;">ON</span></h1>', unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: center; margin-bottom: 30px; color: #ffffff !important;'>Crear Nuevo Perfil Escolar</h3>", unsafe_allow_html=True)
     
     st.warning(f"La cédula ID: {st.session_state.id_nuevo} no está registrada en el sistema.")
     
-    # Formulario que pide estrictamente Nombre y Edad
+    # Formulario que pide Nombre y Edad
     nombre_nuevo = st.text_input("Nombre Completo del Estudiante:")
     edad_nueva = st.text_input("Edad (Años):")
     
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Botón Principal para Registrarse
     if st.button("Registrar y Entrar al Sistema 🚀", use_container_width=True, type="primary"):
         if nombre_nuevo.strip() and edad_nueva.strip():
-            # Buscamos o creamos el perfil pasándole las variables a tu módulo base_datos
             st.session_state.usuario = buscar_o_crear_usuario(
                 st.session_state.id_nuevo, nombre_nuevo.strip(), edad_nueva.strip()
             )
@@ -508,11 +510,10 @@ elif st.session_state.pantalla == "registro":
         else:
             st.error("❌ Todos los campos son obligatorios.")
             
-    # 🚪 NUEVO: Botón de Cerrar Sesión / Regresar por si se equivocó de cédula
     if st.button("⬅️ Cancelar / Cerrar Sesión", use_container_width=True, type="secondary"):
         cerrar_sesion()
 
-    # Renderizado del pie de página integrado en fondo oscuro
+    # Pie de página
     st.markdown(
         """
         <div class="footer-portada-limpio">
