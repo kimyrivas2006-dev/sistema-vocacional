@@ -396,10 +396,76 @@ elif st.session_state.pantalla == "login":
         """,
         unsafe_allow_html=True
     )
+# =========================================================================
+# PANTALLA DE REGISTRO INTERMEDIA (ESTO VA AQUÍ, EMPEZANDO EN LA LÍNEA 403)
+# =========================================================================
+elif st.session_state.pantalla == "registro":
+    st.markdown(
+        """
+        <style>
+        .stApp { background-color: #f8f9fa !important; color: #212529 !important; }
+        div.stButton > button[kind="primary"] { color: #ffffff !important; }
+        
+        /* Footer responsivo para la sección clara */
+        .footer-portada-limpio {
+            margin-top: 100px;
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 18px;
+            flex-wrap: wrap;
+        }
+        .footer-portada-limpio a {
+            color: #495057 !important;
+            text-decoration: none !important;
+            opacity: 0.9;
+        }
+        @media (max-width: 640px) {
+            .footer-portada-limpio {
+                flex-direction: column !important;
+                gap: 16px !important;
+                margin-top: 60px;
+            }
+        }
+        </style>
+        """, 
+        unsafe_allow_html=True
+    )
+    st.markdown("## ✨ Crear Nuevo Perfil Escolar")
+    st.warning(f"La cédula ID: {st.session_state.id_nuevo} no está registrada en el sistema.")
+    
+    nombre_nuevo = st.text_input("Nombre Completo del Estudiante:")
+    edad_nueva = st.text_input("Edad (Años):")
+    
+    if st.button("Registrar y Entrar al Sistema 🚀", use_container_width=True, type="primary"):
+        if nombre_nuevo and edad_nueva:
+            st.session_state.usuario = buscar_o_crear_usuario(
+                st.session_state.id_nuevo, nombre_nuevo, edad_nueva
+            )
+            st.success("¡Perfil estudiantil creado con éxito!")
+            st.session_state.pantalla = "menu"
+            st.rerun()
+        else:
+            st.error("❌ Todos los campos son obligatorios.")
 
+    # Renderizado del pie de página claro
+    st.markdown(
+        """
+        <div class="footer-portada-limpio">
+            <a href="#">Términos y Condiciones</a>
+            <a href="#">Políticas de Privacidad</a>
+            <a href="#">Contacto</a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 # =========================================================================
 # 3. MENÚ PRINCIPAL / PANEL DE RESULTADOS
 # =========================================================================
+
 elif st.session_state.pantalla == "menu":
     st.markdown("<style>.stApp { background-color: #f8f9fa !important; color: #212529 !important; }</style>", unsafe_allow_html=True)
     usuario = st.session_state.usuario
