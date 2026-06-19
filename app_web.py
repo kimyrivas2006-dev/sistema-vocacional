@@ -505,7 +505,43 @@ elif st.session_state.pantalla == "menu":
                     st.write(f"⭐ **{pts} pts** -> Perfil Emprendedor.")
                 elif inte_id in DESCRIPCIONES_GARDNER:
                     st.write(f"⭐ **{pts} pts** -> {DESCRIPCIONES_GARDNER[inte_id]}")
+                # =========================================================================
+            # 🚀 ALGORITMO DE RECOMENDACIÓN DE CARRERAS (CRUCE DE PERFILES)
+            # =========================================================================
+            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown("### 🎯 Carreras Sugeridas Según tu Perfil Integrado")
+            st.markdown("Basado en la combinación única de tu tipo de personalidad **RIASEC** y tus inteligencias potenciales dominantes, el sistema sugiere las siguientes opciones académicas:")
 
+            # Extraemos las claves principales del usuario
+            codigo_riasec = usuario["resultados_holland"] if usuario["resultados_holland"] else ""
+            inteligencias_top = [item[0].strip().upper() for item in perfil_ordenado[:3]]
+
+            from diccionario_vocacional import BANCO_CARRERAS
+            carreras_encontradas = []
+
+            # Recorremos el banco de carreras importado para validar afinidades
+            for carrera, info in BANCO_CARRERAS.items():
+                # Validación de Holland: Verifica si la primera letra dominante del código está en la carrera
+                afinidad_holland = False
+                if codigo_riasec and (codigo_riasec[0] in info["holland"]):
+                    afinidad_holland = True
+                
+                # Validación de Gardner: Verifica si la carrera comparte al menos una inteligencia del Top 3
+                afinidad_gardner = any(inte in info["gardner"] for inte in inteligencias_top)
+
+                # Si cumple con ambos criterios, califica para recomendación
+                if afinidad_holland and afinidad_gardner:
+                    carreras_encontradas.append((carrera, info["descripcion"]))
+
+            # Desplegamos las recomendaciones en la interfaz de forma limpia
+            if carreras_encontradas:
+                # Mostramos un máximo de 4 recomendaciones para no saturar la pantalla móvil
+                for nombre_carrera, desc_carrera in carreras_encontradas[:4]:
+                    with st.expander(f"✨ {nombre_carrera}"):
+                        st.write(desc_carrera)
+            else:
+                # Caso de contingencia si el cruce es demasiado estricto o el código está vacío
+                st.info("💡 Tu perfil es muy amplio y versátil. Te invitamos a consultar con un orientador para explorar opciones adaptadas a tus inteligencias destacadas.")
     st.divider()
     if st.button("Cerrar Sesión", type="secondary", use_container_width=True):
         cerrar_sesion()
