@@ -78,98 +78,68 @@ if st.session_state.pantalla == "portada":
         /* Cuerpo Central */
         .cuerpo-portada {
             text-align: center;
-            margin-top: 80px;
+            margin-top: 100px;
             margin-bottom: 20px;
-            padding: 0 15px;
         }
-        
-        /* SOLUCIÓN AL TÍTULO CORTADO: Se reduce de forma dinámica en teléfonos */
         .titulo-central {
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            font-size: min(9vw, 65px);
+            font-size: 72px;
             font-weight: 800;
             color: #ffffff;
             margin-bottom: 15px;
             letter-spacing: -1px;
-            line-height: 1.2;
         }
         .subtitulo-frase {
             font-family: 'Helvetica Neue', Arial, sans-serif;
             font-style: italic;
-            font-size: min(4.5vw, 22px);
+            font-size: 22px;
             color: #ffffff;
             opacity: 0.9;
         }
         
-        /* FORZAR CENTRADO DEL BOTÓN EN EL EJE CENTRAL */
-        .stButton {
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-            width: 100% !important;
-            margin: 40px 0 !important;
-        }
-        
-        /* Estilos de la Píldora Blanca Grande */
-        .stButton button {
-            background-color: #ffffff !important;
-            color: #17123a !important;
+        /* --- ESTILOS DE ALTA PRIORIDAD PARA EL BOTÓN DE PORTADA --- */
+        div.contenedor-portada-boton button {
+            background-color: #5d1b75 !important;
             border-radius: 30px !important;
-            border: none !important;
-            padding: 14px 80px !important;
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5) !important;
+            border: 2px solid #00bf63 !important;
+            padding: 14px 0px !important;
+            width: 100% !important;
+            box-shadow: 0 4px 20px rgba(0, 191, 99, 0.3) !important;
             transition: all 0.2s ease !important;
         }
         
-        /* Texto interno del botón en Súper Negrita */
-        .stButton button p {
+        div.contenedor-portada-boton button p {
             font-family: 'Helvetica Neue', Arial, sans-serif !important;
             font-size: 24px !important;
             font-weight: 800 !important;
-            color: #17123a !important;
+            color: #ffffff !important; /* Letras blancas siempre visibles */
             margin: 0 !important;
+            text-align: center !important;
         }
         
-        .stButton button:hover {
+        div.contenedor-portada-boton button:hover {
             transform: scale(1.05) !important;
-            background-color: #f8f9fa !important;
+            background-color: #00bf63 !important;
+        }
+
+        div.contenedor-portada-boton button:hover p {
+            color: #17123a !important;
         }
         
-        /* SOLUCIÓN AL PIE DE PÁGINA: Contenedor responsivo centrado */
+        /* Enlaces del Footer limpios a 20px */
         .footer-portada-limpio {
-            margin-top: 100px;
+            margin-top: 140px;
             padding-bottom: 20px;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 45px;
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            font-size: 18px;
-            line-height: 2.0;
+            font-size: 20px;
         }
         .footer-portada-limpio a {
             color: #ffffff !important;
             text-decoration: none !important;
             opacity: 0.9;
-            margin: 0 15px;
-            display: inline-block;
-        }
-        .footer-separador {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        /* Ajustes específicos para teléfonos */
-        @media (max-width: 640px) {
-            .cuerpo-portada {
-                margin-top: 40px;
-            }
-            .stButton button {
-                padding: 12px 50px !important; /* Reduce el ancho del botón para que quepa bien */
-            }
-            .footer-separador {
-                display: none !important; /* Esconde las barras verticales en el celular */
-            }
-            .footer-portada-limpio a {
-                display: block !important; /* Coloca los enlaces uno abajo del otro */
-                margin: 10px 0 !important;
-            }
         }
         </style>
         """,
@@ -194,19 +164,21 @@ if st.session_state.pantalla == "portada":
         unsafe_allow_html=True
     )
     
-    # Botón Nativo que responde al CSS de arriba
-    if st.button("Iniciar"):
-        st.session_state.pantalla = "login"
-        st.rerun()
+    # MAQUETACIÓN DE CENTRADO EXACTO CON COLUMNAS EN PYTHON
+    st.markdown('<div class="contenedor-portada-boton">', unsafe_allow_html=True)
+    col_izq, col_centro, col_der = st.columns([1.5, 1, 1.5])
+    with col_centro:
+        if st.button("Iniciar", use_container_width=True):
+            st.session_state.pantalla = "login"
+            st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
         
-    # Pie de Página Integrado
+    # Pie de Página
     st.markdown(
         """
         <div class="footer-portada-limpio">
             <a href="#">Términos y Condiciones</a>
-            <span class="footer-separador">|</span>
             <a href="#">Políticas de Privacidad</a>
-            <span class="footer-separador">|</span>
             <a href="#">Contacto</a>
         </div>
         """,
@@ -214,54 +186,170 @@ if st.session_state.pantalla == "portada":
     )
 
 # =========================================================================
-# 2. PASO B: FORMULARIO DE INGRESO (FONDO CLARO, LIMPIO Y PROFESIONAL)
+# 2. PASO B: INGRESO DE CÉDULA (NATIVO, ESTILIZADO Y CENTRADO)
 # =========================================================================
 elif st.session_state.pantalla == "login":
     st.markdown(
         """
         <style>
+        /* Ocultar barra superior nativa */
+        [data-testid="stHeader"] {
+            display: none !important;
+        }
+        [data-testid="stAppViewContainer"] {
+            padding-top: 0rem !important;
+        }
+        .block-container {
+            padding-top: 2rem !important;
+            padding-bottom: 2rem !important;
+            max-width: 1200px !important;
+        }
+        
+        /* Fondo degradado líquido aurora profundo */
         .stApp {
-            background-color: #f8f9fa !important;
-            color: #212529 !important;
-        }
-        .login-box {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border-left: 5px solid #17123a;
-            margin-top: 20px;
-        }
-        /* Asegurar legibilidad del texto en los botones del panel claro */
-        div.stButton > button {
-            color: #212529 !important;
-        }
-        div.stButton > button[kind="primary"] {
+            background: linear-gradient(135deg, #0d0b21 0%, #17123a 40%, #3a1c50 80%, #52184b 100%) !important;
             color: #ffffff !important;
+        }
+        
+        /* Barra de Navegación Superior */
+        .logo-vocation {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 26px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-top: 10px;
+        }
+        .logo-vocation span {
+            color: #00bf63 !important;
+        }
+        .link-nosotros-limpio {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 20px !important;
+            color: #ffffff !important;
+            text-decoration: none !important;
+            font-weight: 500;
+            display: block;
+            text-align: right;
+            margin-top: 15px;
+        }
+        
+        /* Cuerpo central principal */
+        .cuerpo-cedula {
+            text-align: center;
+            margin-top: 120px;
+            margin-bottom: 20px;
+        }
+        .titulo-central-cedula {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 64px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+        
+        /* Estilización Estricta del Input de Cédula */
+        div.stTextInput > div > div > input {
+            background-color: transparent !important;
+            border: 2px solid #ffffff !important;
+            border-radius: 10px !important;
+            color: #ffffff !important;
+            font-family: 'Helvetica Neue', Arial, sans-serif !important;
+            font-size: 36px !important;
+            font-weight: bold !important;
+            padding: 15px !important;
+            text-align: center !important;
+            width: 100% !important;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        div.stTextInput label p {
+            color: #ffffff !important;
+            font-size: 18px !important;
+            margin-bottom: 10px !important;
+        }
+        
+        /* --- ESTILIZACIÓN ULTRA ESPECÍFICA DE LA BOTONERA DE LOGIN --- */
+        div.bloque-botones-login button {
+            border-radius: 12px !important;
+            padding: 10px 20px !important;
+            font-size: 18px !important;
+            font-weight: bold !important;
+        }
+
+        /* 1. BOTÓN VOLVER (Gris translúcido con texto blanco) */
+        div.bloque-botones-login div[data-testid="stColumn"]:nth-of-type(2) button {
+            background-color: rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+        }
+        div.bloque-botones-login div[data-testid="stColumn"]:nth-of-type(2) button p {
+            color: #ffffff !important;
+        }
+
+        /* 2. BOTÓN SIGUIENTE (Coral con texto blanco) */
+        div.bloque-botones-login div[data-testid="stColumn"]:nth-of-type(3) button {
+            background-color: #ff5a5f !important;
+            border: none !important;
+        }
+        div.bloque-botones-login div[data-testid="stColumn"]:nth-of-type(3) button p {
+            color: #ffffff !important;
+        }
+        
+        /* Enlaces del Footer limpios a 20px */
+        .footer-portada-limpio {
+            margin-top: 140px;
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 45px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 20px;
+        }
+        .footer-portada-limpio a {
+            color: #ffffff !important;
+            text-decoration: none !important;
+            opacity: 0.9;
         }
         </style>
         """,
         unsafe_allow_html=True
     )
     
-    st.markdown("## 🔑 Ingreso al Sistema Vocacional")
-    st.markdown("Por favor, introduce tus datos para cargar o crear tu perfil de evaluación.")
+    # Barra Superior del Login (Mismo grid que la portada para que no se mueva)
+    col_logo, col_vacio, col_nosotros = st.columns([2, 5, 2])
+    with col_logo:
+        st.markdown('<div class="logo-vocation">Vocati<span>ON</span></div>', unsafe_allow_html=True)
+    with col_nosotros:
+        st.markdown('<a href="#" class="link-nosotros-limpio">Nosotros</a>', unsafe_allow_html=True)
+        
+    # Bloque del cuerpo del Login envuelto adecuadamente
+    st.markdown(
+        """
+        <div class="cuerpo-cedula">
+            <div class="titulo-central-cedula">Ingresa tu Cédula</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     
-    with st.container():
-        st.markdown('<div class="login-box">', unsafe_allow_html=True)
-        identidad_input = st.text_input("Documento de Identidad (Cédula):", key="id_login")
-        st.markdown('</div>', unsafe_allow_html=True)
+    col_v1, col_input, col_v2 = st.columns([1, 2, 1])
+    with col_input:
+        identidad_input = st.text_input("Documento de Identidad (sin puntos ni guiones):", key="id_login_estilizado")
     
     st.write("")
+    st.write("")
     
-    col_btn1, col_btn2 = st.columns([1, 2])
-    with col_btn1:
-        if st.button("⬅ Volver"):
+    # Encapsulamos la botonera en la clase controlada
+    st.markdown('<div class="bloque-botones-login">', unsafe_allow_html=True)
+    col_b1, col_b2, col_b3 = st.columns([2, 1, 1])
+    with col_b1:
+        st.write("") 
+    with col_b2:
+        if st.button("⬅ Volver", key="btn_volver", use_container_width=True):
             st.session_state.pantalla = "portada"
             st.rerun()
-            
-    with col_btn2:
-        if st.button("Ingresar al Panel 🚀", type="primary", use_container_width=True):
+    with col_b3:
+        if st.button("Siguiente ✨", key="btn_siguiente", use_container_width=True):
             id_clave = identidad_input.strip().replace(".", "").replace("-", "")
             if id_clave:
                 datos_db = cargar_datos()
@@ -275,31 +363,25 @@ elif st.session_state.pantalla == "login":
                     st.rerun()
             else:
                 st.error("❌ Por favor, ingresa un número de documento válido.")
-
-elif st.session_state.pantalla == "registro":
-    st.markdown("<style>.stApp { background-color: #f8f9fa !important; color: #212529 !important; } div.stButton > button[kind=\"primary\"] { color: #ffffff !important; }</style>", unsafe_allow_html=True)
-    st.markdown("## ✨ Crear Nuevo Perfil Escolar")
-    st.warning(f"La cédula ID: {st.session_state.id_nuevo} no está registrada en el sistema.")
-    
-    nombre_nuevo = st.text_input("Nombre Completo del Estudiante:")
-    edad_nueva = st.text_input("Edad (Años):")
-    
-    if st.button("Registrar and Entrar al Sistema", use_container_width=True, type="primary"):
-        if nombre_nuevo and edad_nueva:
-            st.session_state.usuario = buscar_o_crear_usuario(
-                st.session_state.id_nuevo, nombre_nuevo, edad_nueva
-            )
-            st.success("¡Perfil estudiantil creado con éxito!")
-            st.session_state.pantalla = "menu"
-            st.rerun()
-        else:
-            st.error("❌ Todos los campos son obligatorios.")
+    st.markdown('</div>', unsafe_allow_html=True)
+        
+    # Renderizado del pie de página
+    st.markdown(
+        """
+        <div class="footer-portada-limpio">
+            <a href="#">Términos y Condiciones</a>
+            <a href="#">Políticas de Privacidad</a>
+            <a href="#">Contacto</a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 # =========================================================================
 # 3. MENÚ PRINCIPAL / PANEL DE RESULTADOS
 # =========================================================================
 elif st.session_state.pantalla == "menu":
-    st.markdown("<style>.stApp { background-color: #f8f9fa !important; color: #212529 !important; } div.stButton > button { color: #212529 !important; }</style>", unsafe_allow_html=True)
+    st.markdown("<style>.stApp { background-color: #f8f9fa !important; color: #212529 !important; }</style>", unsafe_allow_html=True)
     usuario = st.session_state.usuario
     st.title(f"👋 ¡Hola, {usuario['nombre']}!")
     st.markdown("#### Panel de Control de Evaluación Vocacional")
@@ -349,7 +431,7 @@ elif st.session_state.pantalla == "menu":
                 for p in PREGUNTAS_GARDNER:
                     categorias[p["categoria"]].append(p["id"])
                 muestreo = []
-                for cat, ids in categorias.items():
+                for cat, ids in categories.items():
                     muestreo.extend(random.sample(ids, 5))
                 random.shuffle(muestreo)
                 usuario["progreso_gardner"]["preguntas_orden"] = muestreo
@@ -412,7 +494,7 @@ elif st.session_state.pantalla == "menu":
 # 4. INTERFAZ INTERACTIVA: TEST DE HOLLAND
 # =========================================================================
 elif st.session_state.pantalla == "holland":
-    st.markdown("<style>.stApp { background-color: #f8f9fa !important; color: #212529 !important; } div.stButton > button { color: #212529 !important; } div.stButton > button[kind=\"primary\"] { color: #ffffff !important; }</style>", unsafe_allow_html=True)
+    st.markdown("<style>.stApp { background-color: #f8f9fa !important; color: #212529 !important; }</style>", unsafe_allow_html=True)
     usuario = st.session_state.usuario
     progreso = usuario["progreso_holland"]
     st.title("📋 Cuestionario de Intereses de Holland")
@@ -463,7 +545,7 @@ elif st.session_state.pantalla == "holland":
 # 5. INTERFAZ INTERACTIVA: TEST DE GARDNER
 # =========================================================================
 elif st.session_state.pantalla == "gardner":
-    st.markdown("<style>.stApp { background-color: #f8f9fa !important; color: #212529 !important; } div.stButton > button { color: #212529 !important; } div.stButton > button[kind=\"primary\"] { color: #ffffff !important; }</style>", unsafe_allow_html=True)
+    st.markdown("<style>.stApp { background-color: #f8f9fa !important; color: #212529 !important; }</style>", unsafe_allow_html=True)
     usuario = st.session_state.usuario
     progreso = usuario["progreso_gardner"]
     st.title("🧠 Cuestionario de Inteligencias Múltiples (Gardner)")
