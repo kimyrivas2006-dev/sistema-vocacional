@@ -20,18 +20,18 @@ def cerrar_sesion():
     st.session_state.pantalla = "portada"
     st.rerun()
 
-# =========================================================================
-# UBICACIÓN DEL BOTÓN DE CERRAR SESIÓN CENTRADO
+## =========================================================================
+# BOTÓN DE CERRAR SESIÓN EN LA PARTE SUPERIOR DERECHA
 # =========================================================================
 if st.session_state.usuario is not None:
-    # Creamos 3 columnas para centrar el botón en el medio
-    col_izq, col_centro, col_der = st.columns([2, 1, 2])
+    # Creamos dos columnas: la izquierda se lleva casi todo el espacio y la derecha aloja el botón
+    col_espacio, col_boton = st.columns([8, 2])
     
-    with col_centro:
+    with col_boton:
         if st.button("🚪 Cerrar Sesión", type="secondary", use_container_width=True):
             cerrar_sesion()
             
-    st.markdown("---") # Línea divisoria opcional para separar el botón del contenido
+    st.markdown("---") # Línea divisoria para separar el botón del resto del contenido
 
 # =========================================================================
 # 1. PASO A: PORTADA DE BIENVENIDA (CÓDIGO NATIVO RESPONSIVO)
@@ -520,7 +520,7 @@ elif st.session_state.pantalla == "registro":
             # ➡️ PÓNLO AQUÍ (Justo arriba del st.success)
             actualizar_usuario_en_db(st.session_state.usuario)
             # ==========================================
-            
+
             st.success("¡Perfil estudiantil creado con éxito!")
             st.session_state.pantalla = "menu"
             st.rerun()
