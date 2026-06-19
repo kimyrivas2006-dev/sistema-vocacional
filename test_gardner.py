@@ -99,17 +99,7 @@ PREGUNTAS_GARDNER = [
     {"id": "NA9", "categoria": "NA", "texto": "Identificar con rapidez patrones en la naturaleza, comportamientos animales o alteraciones en un ecosistema."},
     {"id": "NA10", "categoria": "NA", "texto": "Preferir coleccionar, fotografiar o estudiar elementos biológicos u orgánicos reales antes que objetos puramente sintéticos."},
 
-    # --- EMPRENDEDOR (E) ---
-    {"id": "E1", "categoria": "E", "texto": "Liderar, motivar y coordinar un equipo de personas para alcanzar las metas de un proyecto o negocio."},
-    {"id": "E2", "categoria": "E", "texto": "Negociar contratos con proveedores, vender una idea tecnológica o convencer a clientes difíciles."},
-    {"id": "E3", "categoria": "E", "texto": "Planificar estrategias comerciales, analizar la competencia o lanzar marcas al mercado."},
-    {"id": "E4", "categoria": "E", "texto": "Asumir la responsabilidad financiera y legal de emprender una empresa o negocio propio."},
-    {"id": "E5", "categoria": "E", "texto": "Organizar eventos corporativos, campañas publicitarias o ferias de negocios."},
-    {"id": "E6", "categoria": "E", "texto": "Tomar decisiones rápidas e importantes bajo presión para resolver crisis operativas."},
-    {"id": "E7", "categoria": "E", "texto": "Presentar proyectos o propuestas comerciales frente a inversionistas para conseguir financiamiento."},
-    {"id": "E8", "categoria": "E", "texto": "Supervisar el rendimiento del personal y delegar tareas según las fortalezas de cada quien."},
-    {"id": "E9", "categoria": "E", "texto": "Diseñar planes de expansión para llevar un producto o servicio a nuevas ciudades o países."},
-    {"id": "E10", "categoria": "E", "texto": "Promover innovaciones tecnológicas argumentando sus beneficios económicos y de productividad."}
+   
 ]
 
 def ejecutar_test_gardner(usuario):
