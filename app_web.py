@@ -666,11 +666,11 @@ elif st.session_state.pantalla == "menu":
 
         carreras_encontradas = []
 
-        # 1. Intento de Cruce Perfecto (Holland + Gardner)
+        # 1. Filtro base usando las llaves exactas de tu BANCO_CARRERAS
         for info in BANCO_CARRERAS:
-            nombre_carrera = info.get("carrera", "Carrera Universitaria")
-            holland_carrera = [h.strip().upper() for h in info.get("holland", [])]
-            gardner_carrera = [g.strip().upper() for g in info.get("gardner", [])]
+            nombre_carrera = info.get("nombre", "Carrera Universitaria")
+            holland_carrera = [h.strip().upper() for h in info.get("holland_requeridos", [])]
+            gardner_carrera = [g.strip().upper() for g in info.get("gardner_requeridos", [])]
             
             afinidad_holland = False
             if codigo_riasec and (codigo_riasec[0] in holland_carrera):
@@ -678,44 +678,24 @@ elif st.session_state.pantalla == "menu":
             
             afinidad_gardner = False
             if inteligencias_top:
+                # Compara si alguna de tus inteligencias top está en la lista requerida
                 afinidad_gardner = any(inte in gardner_carrera for inte in inteligencias_top)
 
-            if afinidad_holland and afinidad_gardner:
+            # Si coincide en alguno de los dos criterios del perfil, la añadimos
+            if afinidad_holland or afinidad_gardner:
                 carreras_encontradas.append((nombre_carrera, info.get("descripcion", "")))
 
-        # 2. 💡 FILTRO DE RESPALDO: Si el cruce estricto falló, busca por Inteligencia Dominante
-        if not carreras_encontradas and inteligencias_top:
-            inteligencia_principal = inteligencias_top[0]
-            
-            for info in BANCO_CARRERAS:
-                nombre_carrera = info.get("carrera", "Carrera Universitaria")
-                gardner_carrera = [g.strip().upper() for g in info.get("gardner", [])]
-                holland_carrera = [h.strip().upper() for h in info.get("holland", [])]
-                
-                # CASO ESPECIAL: Si la inteligencia número 1 es el Perfil Emprendedor ("E")
-                if inteligencia_principal == "E":
-                    # Sugiere carreras que tengan orientación Emprendedora (E) en Holland o Gardner
-                    if "E" in gardner_carrera or "E" in holland_carrera:
-                        carreras_encontradas.append((nombre_carrera, info.get("descripcion", "")))
-                
-                # Caso tradicional para el resto de las inteligencias de Gardner
-                elif inteligencia_principal in gardner_carrera:
-                    carreras_encontradas.append((nombre_carrera, info.get("descripcion", "")))
-
         # =========================================================================
-        # 3. Desplegamos los expanders en la interfaz móvil de manera segura
+        # 2. Desplegamos los expanders en la interfaz de manera segura
         # =========================================================================
         if carreras_encontradas:
-            # Seleccionamos dinámicamente cuántas mostrar (máximo 4 o las que existan)
-            cantidad_a_mostrar = min(4, len(carreras_encontradas))
-            
-            for i in range(cantidad_a_mostrar):
-                nombre_carrera, desc_carrera = carreras_encontradas[i]
+            # Mostramos las carreras encontradas dinámicamente sin romper el índice
+            for nombre_carrera, desc_carrera in carreras_encontradas:
                 with st.expander(f"✨ {nombre_carrera}"):
                     st.write(desc_carrera)
         else:
-            # Mensaje de contingencia si no hubo coincidencias exactas en el cruce
             st.info("💡 Tu perfil es muy amplio y versátil. Te invitamos a explorar las opciones directamente en el Manual de Orientación Vocacional.")
+    
 
          # 🚪 ESTE BLOQUE DEBE QUEDAR FUERA DE LOS "IF" PARA QUE APAREZCA SIEMPRE
         st.write("") # Un espacio en blanco de separación
