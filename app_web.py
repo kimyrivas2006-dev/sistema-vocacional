@@ -468,7 +468,7 @@ elif st.session_state.pantalla == "menu":
         # Inicializamos variables para que estén disponibles en el algoritmo de cruce final
         codigo_riasec = ""
         inteligencias_top = []
-        nombres_mapa = {"LV": "Lingüístico-Verbal", "LM": "Lógico-Matemática", "VE": "Visual-Espacial", "KC": "Kinestésico-Corporal", "MU": "Musical", "ER": "Interpersonal", "RA": "Intrapersonal", "NA": "Naturalista", "E": "Perfil Emprendedor"}
+        nombres_mapa = {"LV": "Lingüístico-Verbal", "LM": "Lógico-Matemática", "VE": "Visual-Espacial", "KC": "Kinestésico-Corporal", "MU": "Musical", "ER": "Interpersonal", "RA": "Intrapersonal", "NA": "Naturalista"}
 
         if usuario["resultados_holland"]:
             codigo_riasec = str(usuario["resultados_holland"]).strip().upper()
@@ -508,9 +508,8 @@ elif st.session_state.pantalla == "menu":
             for item in perfil_ordenado[:3]:
                 inte_id = str(item[0]).strip().upper()
                 pts = item[1]
-                if inte_id == "E":
-                    st.write(f"⭐ **{pts} pts** -> Perfil Emprendedor.")
-                elif inte_id in DESCRIPCIONES_GARDNER:
+                # Solo imprime si pertenece estrictamente a las inteligencias de Gardner
+                if inte_id in DESCRIPCIONES_GARDNER:
                     st.write(f"⭐ **{pts} pts** -> {DESCRIPCIONES_GARDNER[inte_id]}")
 
   # =========================================================================
