@@ -83,7 +83,7 @@ if st.session_state.pantalla == "portada":
         }
         .titulo-central {
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            font-size: 72px;
+            font-size: min(9vw, 52px) !important;
             font-weight: 800;
             color: #ffffff;
             margin-bottom: 15px;
@@ -125,22 +125,32 @@ if st.session_state.pantalla == "portada":
         div.contenedor-portada-boton button:hover p {
             color: #17123a !important;
         }
-        
         /* Enlaces del Footer limpios a 20px */
-        .footer-portada-limpio {
-            margin-top: 140px;
-            padding-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 45px;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            font-size: 20px;
-        }
-        .footer-portada-limpio a {
-            color: #ffffff !important;
-            text-decoration: none !important;
-            opacity: 0.9;
-        }
+.footer-portada-limpio {
+    margin-top: 140px;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 45px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 20px;
+    flex-wrap: wrap; /* Permite que los elementos salten de línea si no caben */
+}
+
+.footer-portada-limpio a {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    opacity: 0.9;
+}
+
+/* 📱 SOLUCIÓN PARA CELULARES */
+@media (max-width: 640px) {
+    .footer-portada-limpio {
+        flex-direction: column !important; /* Los pone uno debajo del otro */
+        gap: 15px !important; /* Espacio cómodo entre cada enlace */
+        margin-top: 60px; /* Reduce el margen superior excesivo en pantallas chicas */
+    }
+}
         </style>
         """,
         unsafe_allow_html=True
@@ -431,7 +441,7 @@ elif st.session_state.pantalla == "menu":
                 for p in PREGUNTAS_GARDNER:
                     categorias[p["categoria"]].append(p["id"])
                 muestreo = []
-                for cat, ids in categories.items():
+                for cat, ids in categorias.items():
                     muestreo.extend(random.sample(ids, 5))
                 random.shuffle(muestreo)
                 usuario["progreso_gardner"]["preguntas_orden"] = muestreo
