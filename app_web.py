@@ -447,7 +447,7 @@ elif st.session_state.pantalla == "menu":
                 
         if st.button("Ir al Test de Gardner", key="btn_g", use_container_width=True):
             if not usuario["progreso_gardner"]["preguntas_orden"]:
-                categorias = {"LV":[], "LM":[], "VE":[], "KC":[], "MU":[], "ER":[], "RA":[], "NA":[], "E":[]}
+                categorias = {"LV":[], "LM":[], "VE":[], "KC":[], "MU":[], "ER":[], "RA":[], "NA":[]}
                 for p in PREGUNTAS_GARDNER:
                     categorias[p["categoria"]].append(p["id"])
                 muestreo = []
@@ -656,7 +656,7 @@ elif st.session_state.pantalla == "gardner":
                 st.session_state.pantalla = "menu"
                 st.rerun()
     else:
-        puntajes = {"LV":0, "LM":0, "VE":0, "KC":0, "MU":0, "ER":0, "RA":0, "NA":0, "E":0}
+        puntajes = {"LV":0, "LM":0, "VE":0, "KC":0, "MU":0, "ER":0, "RA":0, "NA":0}
         for pid, valor in respondidas.items():
             cat = mapa_p[pid]["categoria"]
             puntajes[cat] += valor
