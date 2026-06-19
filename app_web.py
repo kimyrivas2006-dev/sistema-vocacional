@@ -21,6 +21,19 @@ def cerrar_sesion():
     st.rerun()
 
 # =========================================================================
+# UBICACIÓN DEL BOTÓN DE CERRAR SESIÓN CENTRADO
+# =========================================================================
+if st.session_state.usuario is not None:
+    # Creamos 3 columnas para centrar el botón en el medio
+    col_izq, col_centro, col_der = st.columns([2, 1, 2])
+    
+    with col_centro:
+        if st.button("🚪 Cerrar Sesión", type="secondary", use_container_width=True):
+            cerrar_sesion()
+            
+    st.markdown("---") # Línea divisoria opcional para separar el botón del contenido
+
+# =========================================================================
 # 1. PASO A: PORTADA DE BIENVENIDA (CÓDIGO NATIVO RESPONSIVO)
 # =========================================================================
 if st.session_state.pantalla == "portada":
