@@ -702,13 +702,19 @@ elif st.session_state.pantalla == "menu":
                 elif inteligencia_principal in gardner_carrera:
                     carreras_encontradas.append((nombre_carrera, info.get("descripcion", "")))
 
-        # 3. Desplegamos los expanders en la interfaz móvil
+        # =========================================================================
+        # 3. Desplegamos los expanders en la interfaz móvil de manera segura
+        # =========================================================================
         if carreras_encontradas:
-            # Mostramos un máximo de 4 opciones para cuidar el espacio en celulares
-            for nombre_carrera, desc_carrera in carreras_encontradas[:4]:
+            # Seleccionamos dinámicamente cuántas mostrar (máximo 4 o las que existan)
+            cantidad_a_mostrar = min(4, len(carreras_encontradas))
+            
+            for i in range(cantidad_a_mostrar):
+                nombre_carrera, desc_carrera = carreras_encontradas[i]
                 with st.expander(f"✨ {nombre_carrera}"):
                     st.write(desc_carrera)
         else:
+            # Mensaje de contingencia si no hubo coincidencias exactas en el cruce
             st.info("💡 Tu perfil es muy amplio y versátil. Te invitamos a explorar las opciones directamente en el Manual de Orientación Vocacional.")
 
          # 🚪 ESTE BLOQUE DEBE QUEDAR FUERA DE LOS "IF" PARA QUE APAREZCA SIEMPRE
