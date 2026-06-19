@@ -398,7 +398,7 @@ elif st.session_state.pantalla == "login":
     )
 
 # =========================================================================
-# PANTALLA DE REGISTRO INTERMEDIA (CORRECCIÓN DE CONTRASTE EN INPUTS)
+# PANTALLA DE REGISTRO INTERMEDIA (ALINEACIÓN CORREGIDA AL 100%)
 # =========================================================================
 elif st.session_state.pantalla == "registro":
     st.markdown(
@@ -415,16 +415,15 @@ elif st.session_state.pantalla == "registro":
             color: #ffffff !important;
         }
         
-        /* 👁️ CORRECCIÓN AQUÍ: Fondo oscuro intermedio y letras BLANCAS con alto contraste al escribir */
+        /* Fondo oscuro intermedio y letras BLANCAS al escribir */
         .stTextInput input {
             background-color: rgba(255, 255, 255, 0.1) !important;
-            color: #ffffff !important; /* Fuerza a que las letras tipeadas sean blancas */
+            color: #ffffff !important;
             border: 1px solid rgba(255, 255, 255, 0.3) !important;
             border-radius: 8px !important;
             font-size: 16px !important;
         }
         
-        /* Asegurar que cuando el usuario haga clic en el recuadro, el texto siga siendo legible */
         .stTextInput input:focus {
             color: #ffffff !important;
             background-color: rgba(255, 255, 255, 0.15) !important;
@@ -487,13 +486,13 @@ elif st.session_state.pantalla == "registro":
         unsafe_allow_html=True
     )
     
-    # 🎓 Nombre de la aplicación y cabecera estilizada
+    # 🎓 Nombre de la aplicación con el ON en verde
     st.markdown('<h1 class="titulo-registro">🎓 Vocati<span style="color: #10b981 !important; -webkit-text-fill-color: #10b981 !important;">ON</span></h1>', unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center; margin-bottom: 30px; color: #ffffff !important;'>Crear Nuevo Perfil Escolar</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: center; margin-bottom: 30px;'>Crear Nuevo Perfil Escolar</h3>", unsafe_allow_html=True)
     
     st.warning(f"La cédula ID: {st.session_state.id_nuevo} no está registrada en el sistema.")
     
-    # Formulario que pide Nombre y Edad
+    # Campos del formulario con sangría limpia de 4 espacios
     nombre_nuevo = st.text_input("Nombre Completo del Estudiante:")
     edad_nueva = st.text_input("Edad (Años):")
     
@@ -513,7 +512,7 @@ elif st.session_state.pantalla == "registro":
     if st.button("⬅️ Cancelar / Cerrar Sesión", use_container_width=True, type="secondary"):
         cerrar_sesion()
 
-    # Pie de página
+    # Footer
     st.markdown(
         """
         <div class="footer-portada-limpio">
