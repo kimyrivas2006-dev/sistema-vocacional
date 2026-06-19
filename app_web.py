@@ -513,8 +513,8 @@ elif st.session_state.pantalla == "menu":
                 elif inte_id in DESCRIPCIONES_GARDNER:
                     st.write(f"⭐ **{pts} pts** -> {DESCRIPCIONES_GARDNER[inte_id]}")
 
-        # =========================================================================
-        # 🚀 ALGORITMO DE RECOMENDACIÓN DE CARRERAS (CRUCE SEGURO Y MEJORADO)
+  # =========================================================================
+        # 🚀 ALGORITMO DE RECOMENDACIÓN DE CARRERAS (CORREGIDO PARA LISTAS)
         # =========================================================================
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("### 🎯 Carreras Sugeridas Según tu Perfil Integrado")
@@ -522,8 +522,9 @@ elif st.session_state.pantalla == "menu":
 
         carreras_encontradas = []
 
-        # Recorremos el banco de carreras de forma segura
-        for carrera, info in BANCO_CARRERAS.items():
+        # Recorremos el banco de carreras asumiendo que es una LISTA de diccionarios
+        for info in BANCO_CARRERAS:
+            nombre_carrera = info.get("carrera", "Carrera Universitaria")
             holland_carrera = [h.strip().upper() for h in info.get("holland", [])]
             gardner_carrera = [g.strip().upper() for g in info.get("gardner", [])]
             
@@ -539,26 +540,24 @@ elif st.session_state.pantalla == "menu":
 
             # Si cumple ambos criterios se añade
             if afinidad_holland and afinidad_gardner:
-                carreras_encontradas.append((carrera, info["descripcion"]))
+                carreras_encontradas.append((nombre_carrera, info.get("descripcion", "")))
 
-        # 💡 FILTRO DE RESPALDO: Si no hay cruce perfecto o falta un test, recomienda por la Inteligencia N°1
+        # 💡 FILTRO DE RESPALDO: Si no hay cruce perfecto, recomienda por la Inteligencia N°1
         if not carreras_encontradas and inteligencias_top:
-            for carrera, info in BANCO_CARRERAS.items():
+            for info in BANCO_CARRERAS:
+                nombre_carrera = info.get("carrera", "Carrera Universitaria")
                 gardner_carrera = [g.strip().upper() for g in info.get("gardner", [])]
                 if inteligencias_top[0] in gardner_carrera:
-                    carreras_encontradas.append((carrera, info["descripcion"]))
+                    carreras_encontradas.append((nombre_carrera, info.get("descripcion", "")))
 
         # Desplegamos los expanders responsivos
         if carreras_encontradas:
+            # Mostramos un máximo de 4 opciones para cuidar la pantalla del móvil
             for nombre_carrera, desc_carrera in carreras_encontradas[:4]:
                 with st.expander(f"✨ {nombre_carrera}"):
                     st.write(desc_carrera)
         else:
             st.info("💡 Tu perfil es muy amplio y versátil. Te invitamos a explorar las opciones directamente en el Manual de Orientación Vocacional.")
-
-    st.divider()
-    if st.button("Cerrar Sesión", type="secondary", use_container_width=True):
-        cerrar_sesion()
 # =========================================================================
 # 4. INTERFAZ INTERACTIVA: TEST DE HOLLAND
 # =========================================================================
