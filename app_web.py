@@ -516,6 +516,11 @@ elif st.session_state.pantalla == "registro":
             st.session_state.usuario = buscar_o_crear_usuario(
                 st.session_state.id_nuevo, nombre_nuevo.strip(), edad_nueva.strip()
             )
+            # ==========================================
+            # ➡️ PÓNLO AQUÍ (Justo arriba del st.success)
+            actualizar_usuario_en_db(st.session_state.usuario)
+            # ==========================================
+            
             st.success("¡Perfil estudiantil creado con éxito!")
             st.session_state.pantalla = "menu"
             st.rerun()
