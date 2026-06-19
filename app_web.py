@@ -692,6 +692,12 @@ elif st.session_state.pantalla == "menu":
                     st.write(desc_carrera)
         else:
             st.info("💡 Tu perfil es muy amplio y versátil. Te invitamos a explorar las opciones directamente en el Manual de Orientación Vocacional.")
+
+         # 🚪 ESTE BLOQUE DEBE QUEDAR FUERA DE LOS "IF" PARA QUE APAREZCA SIEMPRE
+        st.write("") # Un espacio en blanco de separación
+        st.divider()
+        if st.button("🚪 Cerrar Sesión / Regresar", type="secondary", use_container_width=True):
+            cerrar_sesion()   
 # =========================================================================
 # 4. INTERFAZ INTERACTIVA: TEST DE HOLLAND
 # =========================================================================
