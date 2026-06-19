@@ -314,11 +314,21 @@ elif st.session_state.pantalla == "login":
             gap: 45px;
             font-family: 'Helvetica Neue', Arial, sans-serif;
             font-size: 20px;
+            flex-wrap: wrap; /* Permite saltar de línea si no hay espacio */
         }
         .footer-portada-limpio a {
             color: #ffffff !important;
             text-decoration: none !important;
             opacity: 0.9;
+        }
+        
+        /* 📱 SEPARACIÓN EN VERTICAL PARA CELULARES */
+        @media (max-width: 640px) {
+            .footer-portada-limpio {
+                flex-direction: column !important; /* Los pone uno debajo del otro */
+                gap: 15px !important;             /* Espacio cómodo entre enlaces */
+                margin-top: 60px !important;       /* Reduce el espacio vacío arriba */
+            }
         }
         </style>
         """,
