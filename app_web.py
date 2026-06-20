@@ -463,11 +463,21 @@ elif st.session_state.pantalla == "registro":
             border: none !important;
         }
         
-        /* Botón secundario */
+        /* Botón secundario corregido y siempre visible */
         div.stButton > button[kind="secondary"] {
-            color: rgba(255, 255, 255, 0.7) !important;
-            background-color: transparent !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            color: #ffffff !important; /* Letras completamente blancas */
+            background-color: rgba(255, 255, 255, 0.1) !important; /* Fondo gris claro translúcido visible siempre */
+            border: 1px solid rgba(255, 255, 255, 0.4) !important; /* Borde blanco mucho más marcado */
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease;
+        }
+        
+        /* Efecto al pasar el cursor (Hover) */
+        div.stButton > button[kind="secondary"]:hover {
+            color: #ffffff !important;
+            border-color: #ef4444 !important; /* Cambia a rojo suave para indicar "cancelar" o "salir" */
+            background-color: rgba(239, 68, 68, 0.15) !important; 
         }
         
         /* Footer */
