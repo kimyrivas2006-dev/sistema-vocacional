@@ -411,7 +411,7 @@ elif st.session_state.pantalla == "login":
     )
 
 # =========================================================================
-# PANTALLA DE REGISTRO INTERMEDIA (ALINEACIÓN CORREGIDA AL 100%)
+# PANTALLA DE REGISTRO INTERMEDIA (ESTÉTICA Y BOTONES BLINDADOS AL 100%)
 # =========================================================================
 elif st.session_state.pantalla == "registro":
     st.markdown(
@@ -419,28 +419,29 @@ elif st.session_state.pantalla == "registro":
         <style>
         /* 🎨 El mismo degradado oscuro elegante de la portada */
         .stApp {
-            background: linear-gradient(135deg, #1e1e2f 0%, #0f0f1a 50%, #05050a 100%) !important;
+            background: linear-gradient(135deg, #0d0b21 0%, #17123a 40%, #3a1c50 80%, #52184b 100%) !important;
             color: #ffffff !important;
         }
         
-        /* Ajuste de textos generales */
+        /* Ajuste de textos generales y etiquetas */
         .stApp p, .stApp label, .stApp h3 {
             color: #ffffff !important;
         }
         
-        /* Fondo oscuro intermedio y letras BLANCAS al escribir */
+        /* Forzar contenedor de formulario totalmente invisible */
+        [data-testid="stForm"] {
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0px !important;
+        }
+        
+        /* Fondo oscuro intermedio y letras BLANCAS con alto contraste al escribir */
         .stTextInput input {
             background-color: rgba(255, 255, 255, 0.1) !important;
             color: #ffffff !important;
             border: 1px solid rgba(255, 255, 255, 0.3) !important;
             border-radius: 8px !important;
             font-size: 16px !important;
-        }
-        
-        .stTextInput input:focus {
-            color: #ffffff !important;
-            background-color: rgba(255, 255, 255, 0.15) !important;
-            border-color: #4f46e5 !important;
         }
         
         /* Título Principal */
@@ -456,28 +457,28 @@ elif st.session_state.pantalla == "registro":
             margin-bottom: 10px;
         }
 
-        /* Botón primario */
+        /* Botón primario de Registro (Siempre visible y sólido) */
         div.stButton > button[kind="primary"] {
             color: #ffffff !important;
             background-color: #4f46e5 !important;
             border: none !important;
-        }
-        
-        /* Botón secundario corregido y siempre visible */
-        div.stButton > button[kind="secondary"] {
-            color: #ffffff !important; /* Letras completamente blancas */
-            background-color: rgba(255, 255, 255, 0.1) !important; /* Fondo gris claro translúcido visible siempre */
-            border: 1px solid rgba(255, 255, 255, 0.4) !important; /* Borde blanco mucho más marcado */
             border-radius: 8px !important;
-            font-weight: 600 !important;
-            transition: all 0.3s ease;
+            padding: 12px 20px !important;
+            font-weight: bold !important;
         }
         
-        /* Efecto al pasar el cursor (Hover) */
-        div.stButton > button[kind="secondary"]:hover {
+        /* Botón secundario de Cancelar (Fondo sólido translúcido para evitar invisibilidad) */
+        div.stButton > button[kind="secondary"] {
             color: #ffffff !important;
-            border-color: #ef4444 !important; /* Cambia a rojo suave para indicar "cancelar" o "salir" */
-            background-color: rgba(239, 68, 68, 0.15) !important; 
+            background-color: rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+            border-radius: 8px !important;
+            padding: 12px 20px !important;
+            font-weight: 600 !important;
+        }
+        div.stButton > button[kind="secondary"]:hover {
+            border-color: #ef4444 !important;
+            background-color: rgba(239, 68, 68, 0.2) !important;
         }
         
         /* Footer */
@@ -509,35 +510,37 @@ elif st.session_state.pantalla == "registro":
         unsafe_allow_html=True
     )
     
-    # 🎓 Nombre de la aplicación con el ON en verde
+    # 🎓 Nombre de la aplicación con el ON en verde corregido
     st.markdown('<h1 class="titulo-registro">🎓 Vocati<span style="color: #10b981 !important; -webkit-text-fill-color: #10b981 !important;">ON</span></h1>', unsafe_allow_html=True)
     st.markdown("<h3 style='text-align: center; margin-bottom: 30px;'>Crear Nuevo Perfil Escolar</h3>", unsafe_allow_html=True)
     
     st.warning(f"La cédula ID: {st.session_state.id_nuevo} no está registrada en el sistema.")
     
-    # Campos del formulario con sangría limpia de 4 espacios
-    nombre_nuevo = st.text_input("Nombre Completo del Estudiante:")
-    edad_nueva = st.text_input("Edad (Años):")
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    if st.button("Registrar y Entrar al Sistema 🚀", use_container_width=True, type="primary"):
+    # 📦 Encapsulamiento en Formulario síncrono para asegurar el renderizado de botones
+    with st.form("bloque_registro_seguro"):
+        nombre_nuevo = st.text_input("Nombre Completo del Estudiante:", key="input_reg_nombre")
+        edad_nueva = st.text_input("Edad (Años):", key="input_reg_edad")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Botón de envío nativo del formulario
+        btn_registrar = st.form_submit_button("Registrar y Entrar al Sistema 🚀", use_container_width=True, type="primary")
+        
+    # Lógica de procesamiento de registro
+    if btn_registrar:
         if nombre_nuevo.strip() and edad_nueva.strip():
+            # Creamos la instancia estructurada del nuevo informante
             st.session_state.usuario = buscar_o_crear_usuario(
                 st.session_state.id_nuevo, nombre_nuevo.strip(), edad_nueva.strip()
             )
-            # ==========================================
-            # ➡️ PÓNLO AQUÍ (Justo arriba del st.success)
-            actualizar_usuario_en_db(st.session_state.usuario)
-            # ==========================================
-
             st.success("¡Perfil estudiantil creado con éxito!")
             st.session_state.pantalla = "menu"
             st.rerun()
         else:
             st.error("❌ Todos los campos son obligatorios.")
             
-    if st.button("⬅️ Cancelar / Cerrar Sesión", use_container_width=True, type="secondary"):
+    # 🚪 Botón de escape independiente (Siempre visible abajo)
+    if st.button("Toque aquí para Cancelar / Cerrar Sesión ⬅️", use_container_width=True, type="secondary", key="btn_escape_registro"):
         cerrar_sesion()
 
     # Footer
